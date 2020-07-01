@@ -1,0 +1,81 @@
+# problem statement - Input:  words[] = {"baa", "abcd", "abca", "cab", "cad"}
+# Output: Order of characters is 'b', 'd', 'a', 'c'
+
+#step 1 : Build a DAG of these words
+class DAG():
+
+    graph = {}
+    def getDag(self):
+        return self.graph
+    def createDAG(self,word1,word2):
+        if(len(word2) < len(word1)):
+            wordlength = len(word2)
+        else:
+            wordlength = len(word1)
+        for i in range(0,wordlength):
+            if(word1[i] == word2[i]):
+                continue
+            else:
+                if word1[i] in self.graph.keys():
+                    value_list = self.graph.get(word1[i])
+                    value_list.append(word2[i])
+                else:
+                    value_list = []
+                    value_list.append(word2[i])
+                    self.graph[word1[i]] = value_list
+                break
+    def dfs(self, vertex, stack):
+        if vertex not in stack:
+            stack.insert(0,vertex)
+        v = vertex
+        values = self.graph.get(v)
+        if values is not None:
+            for i in self.graph.get(v):
+                if i not in stack:
+                    key_stack = []
+                    for x,y in self.graph.items():
+                        if (i in y) and (x != v) :
+                            key_stack.insert(0,x)
+                    while len(key_stack)!= 0:
+                        stack.insert(0,key_stack.pop())
+                self.dfs(i,stack)
+        return stack
+
+    def topologicalsort(self):
+        # for a topological ordering, start with vertices with 0 indegree and do a dfs
+        # step1 - get all vertices with 0 indegree
+        #dont push vertices onto stack until all its adjacent vertices are pushed onto the stack
+        graph = self.graph
+        values = [subitem for item in list(graph.values()) for subitem in item]
+        start_vertices = []
+        topo_order = []
+        for v in graph.keys():
+            if v not in values:
+                start_vertices.append(v)
+        for v in start_vertices:
+            stack = []
+            result = self.dfs(v,stack)
+            while len(result) > 0:
+                element = result.pop()
+                if element not in topo_order:
+                    topo_order.append(element)
+        for x in topo_order:
+            print(x)
+
+
+if __name__ == '__main__':
+    obj = DAG()
+    words = ["baa", "abcd", "abca", "cab", "cad"]
+    #words = ["caa","aaa","aab"]
+    #words = ["z", "yx", "yz"]
+    #words = ["ba", "ab", "cb"]
+    #words = ["xza", "ayh", "ples", "plares", "bhaaz", "bnc"]
+    for i in range(0,len(words) - 1):
+        word1 = words[i]
+        word2 = words[i+1]
+        print(i)
+        obj.createDAG(word1,word2)
+    print("DAG created")
+    obj.topologicalsort()
+
+

@@ -1,0 +1,37 @@
+#the simplest example of a recursion problem
+def calculatefib_plain(n):
+    if n < 2:
+        return n
+    return calculatefib_plain(n-1) + calculatefib_plain(n-2)
+
+#fibonacci with memoization
+
+def calculatefib_mem(n):
+    memoize = [-1 for x in range(n + 1)]
+    return calculatefib_mem_recur(n, memoize)
+
+def calculatefib_mem_recur(n, memoize):
+    if n < 2:
+        return n
+    if memoize[n] > -1:
+        return memoize[n]
+    memoize[n] = calculatefib_mem_recur(n - 1,memoize) + calculatefib_mem_recur(n - 2,memoize)
+    return memoize[n]
+
+#fibonacci with tabulation
+def calculatefib_tab(n):
+    dp = [0,1]
+    for i in range(2,n+1):
+        dp.append(dp[i-1] + dp[i-2])
+    return dp[n]
+
+
+def main():
+    print(calculatefib_plain(1))
+    print(calculatefib_mem(5))
+    print(calculatefib_tab(6))
+
+if __name__ == '__main__':
+    main()
+
+#0,1,1,2,3,5
