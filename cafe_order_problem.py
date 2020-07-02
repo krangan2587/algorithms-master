@@ -12,9 +12,9 @@ def first_come_first_serve(take_out_orders, dine_in_orders, served_orders):
     dine_in_count = 0
     fifo = True
     for order in served_orders:
-        if take_out_count < len(take_out_orders) and order == take_out_orders[take_out_count]: #and take_out_count < len(take_out_orders):
+        if take_out_count < len(take_out_orders) and order == take_out_orders[take_out_count]:
             take_out_count = take_out_count + 1
-        elif dine_in_count < len(dine_in_orders) and order == dine_in_orders[dine_in_count]: #and dine_in_count < len(dine_in_orders):
+        elif dine_in_count < len(dine_in_orders) and order == dine_in_orders[dine_in_count]:
             dine_in_count = dine_in_count + 1
         else:
             fifo = False
